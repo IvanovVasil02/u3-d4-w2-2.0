@@ -1,10 +1,11 @@
-import { Col, Container, Row } from "react-bootstrap";
-import { useSelector } from "react-redux";
-import Job from "./Job";
+import { Button, Col, Container, ListGroup, Row } from "react-bootstrap";
+import { BsFillXOctagonFill } from "react-icons/bs";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 const FavoriteList = () => {
   const favoriteJobs = useSelector((state) => state.favoriteJobs.content);
+  const dispatch = useDispatch();
 
   return (
     <Container>
@@ -17,9 +18,20 @@ const FavoriteList = () => {
         </Col>
 
         <Col xs={10} className='mx-auto mb-5'>
-          {favoriteJobs.map((jobData) => (
-            <Job key={"favoriteJobs" + jobData._id} data={jobData} remove={true} />
-          ))}
+          <ListGroup as='ul'>
+            {favoriteJobs.map((jobData, i) => (
+              <ListGroup.Item as='li' className='d-flex' key={"favorite" + i}>
+                {jobData.company_name}
+                <Button variant='transparent' className='ms-auto'>
+                  <BsFillXOctagonFill
+                    onClick={() => {
+                      dispatch({ type: "REMOVE_FROM_FAVORITE", payload: jobData._id });
+                    }}
+                  />
+                </Button>
+              </ListGroup.Item>
+            ))}
+          </ListGroup>
         </Col>
       </Row>
     </Container>

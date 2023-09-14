@@ -1,10 +1,11 @@
 import { Row, Col, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { BsBookmarkFill, BsFillXOctagonFill } from "react-icons/bs";
-import { useDispatch } from "react-redux";
-
-const Job = ({ data, remove }) => {
+import { BsBookmark, BsBookmarkFill } from "react-icons/bs";
+import { useDispatch, useSelector } from "react-redux";
+// BsBookmarkFill
+const Job = ({ data }) => {
   const dispatch = useDispatch();
+  const favoriteJobs = useSelector((state) => state.favoriteJobs.content);
 
   return (
     <Row className='mx-0 mt-3 p-3' style={{ border: "1px solid #00000033", borderRadius: 4 }}>
@@ -17,15 +18,15 @@ const Job = ({ data, remove }) => {
         </a>
 
         <Button
-          variant='outline'
-          className='ms-auto'
+          variant='link'
+          className='ms-auto text-black'
           onClick={() => {
-            dispatch(
-              remove ? { type: "REMOVE_FROM_FAVORITE", payload: data._id } : { type: "ADD_TO_FAVORITE", payload: data }
-            );
+            favoriteJobs.includes(data)
+              ? dispatch({ type: "REMOVE_FROM_FAVORITE", payload: data._id })
+              : dispatch({ type: "ADD_TO_FAVORITE", payload: data });
           }}
         >
-          {remove ? <BsFillXOctagonFill /> : <BsBookmarkFill />}
+          {favoriteJobs.includes(data) ? <BsBookmarkFill /> : <BsBookmark />}
         </Button>
       </Col>
     </Row>
