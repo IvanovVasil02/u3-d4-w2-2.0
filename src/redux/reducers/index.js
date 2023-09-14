@@ -41,8 +41,7 @@ const mainReducer = (state = mainState, action) => {
       return {
         ...state,
         favoriteJobs: {
-          ...state.favoriteJobs,
-          content: [state.favoriteJobs.content.filter((job) => job._id !== action.payload)],
+          content: state.favoriteJobs.content.filter((job) => job._id !== action.payload),
         },
       };
 
